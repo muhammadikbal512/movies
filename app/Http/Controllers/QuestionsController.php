@@ -15,8 +15,9 @@ class QuestionsController extends Controller
      */
     public function index()
     {
-        $questions = Question::with('user')->latest()->paginate(5);
-
+        // Considere o with('user'), o user está declarado na public function user() da classe Question.
+        $questions = Question::with('user')->latest()->paginate(10);
+        
         return view('questions.index', compact('questions'));
     }
 
@@ -42,7 +43,7 @@ class QuestionsController extends Controller
     {
         $request->user()->questions()->create($request->only('title', 'body'));
 
-        return redirect()->route('questions.index')->with('success',"Your question has been submitted");
+        return redirect()->route('questions.index')->with('success', 'Your question has been submitted');
     }
 
     /**
@@ -78,7 +79,7 @@ class QuestionsController extends Controller
     {
         $question->update($request->only('title', 'body'));
 
-        return redirect()->route('questions.index')->with('success', "Your question has been updated");
+        return redirect()->route('questions.index')->with('update', 'Your question has been updated');
     }
 
     /**
@@ -89,6 +90,9 @@ class QuestionsController extends Controller
      */
     public function destroy(Question $question)
     {
-        //
+        $question->delete();
+        
+        return redirect()->route('questions.index')->with('delete', 'Your question has been deleted');
+
     }
 }
