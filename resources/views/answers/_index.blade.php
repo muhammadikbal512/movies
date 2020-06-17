@@ -1,3 +1,4 @@
+@if($answersCount > 0)
 <div class="row mt-4">
         <div class="col-md-12">
             <div class="card">
@@ -58,8 +59,8 @@
                                             'model' => $answer,
                                             'label' => 'answered'    
                                         ])
-                                    </div>
-                                </div>
+                                        </div>
+                                </div>                            
                             </div>
                         </div>
                         <hr>
@@ -68,3 +69,7 @@
             </div>
         </div>
     </div>
+@endif
+
+
+
