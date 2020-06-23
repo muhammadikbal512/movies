@@ -31,7 +31,8 @@
 </template>
 
 <script>
-import axios from 'axios'
+import Vote from './Vote'
+import UserInfo from './UserInfo'
 export default {
     props: ['answer'],
     data () {
@@ -43,6 +44,10 @@ export default {
             questionId: this.answer.question_id,
             beforeEditCache: null,
         }
+    },
+    components: {
+        Vote,
+        UserInfo
     },
     methods: {
         edit () {
