@@ -2040,7 +2040,7 @@ __webpack_require__.r(__webpack_exports__);
           timeout: 3000
         });
       })["catch"](function (err) {
-        _this.$toast.error(err.response.data.message, "Error", {
+        _this.$toast.error(error, "Error", {
           timeout: 3000
         });
       });
@@ -2058,9 +2058,9 @@ __webpack_require__.r(__webpack_exports__);
         title: 'Hey',
         position: 'center',
         buttons: [['<button><b>YES</b></button>', function (instance, toast) {
-          axios__WEBPACK_IMPORTED_MODULE_0___default.a.success(_this2.endpoint).then(function (res) {
+          axios__WEBPACK_IMPORTED_MODULE_0___default.a["delete"](_this2.endpoint).then(function (res) {
             $(_this2.$el).fadeOut(500, function () {
-              _this2.$toast.error(res.data.message, "Deleted", {
+              _this2.$toast.success(res.data.message, "Sucess", {
                 timeout: 3000
               });
             });
