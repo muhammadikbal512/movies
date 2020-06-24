@@ -12,7 +12,9 @@
                     <div class="media">
                         <div class="media-body">
                             <div class="form-group">
-                                <textarea rows="10" v-model="body" class="form-control" required></textarea>
+                                <m-editor :body="body">
+                                    <textarea rows="10" v-model="body" class="form-control" required></textarea>
+                                </m-editor>
                             </div>
                             <button class="btn btn-primary" type="submit" :disabled="isInvalid">Update</button>
                             <button class="btn btn-outline-secondary" type="submit" @click.prevent="cancel">Cancel</button>
@@ -59,6 +61,7 @@
 import Vote from './Vote'
 import UserInfo from './UserInfo'
 import Modification from '../mixins/Modification'
+import MEditor from './MEditor'
 export default {
     props:['question'],
 
@@ -68,7 +71,8 @@ export default {
 
     components: {
         Vote,
-        UserInfo
+        UserInfo,
+        MEditor
     },
 
     data() {
