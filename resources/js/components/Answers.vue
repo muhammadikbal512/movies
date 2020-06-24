@@ -26,8 +26,11 @@
 <script>
 import Answer from './Answer'
 import NewAnswer from './NewAnswer'
+import highlight from '../mixins/highlight'
 export default {
     props: ['question'],
+
+    mixins:[highlight],
 
     computed: {
         title() {
@@ -52,6 +55,7 @@ export default {
         add (answer) {
             this.answers.push(answer);
             this.count++;
+            this.highlight()
         },
         remove (index) {
             this.answers.splice(index, 1)
