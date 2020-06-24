@@ -24,6 +24,7 @@
     },
     "dependencies": {
         "@fortawesome/fontawesome-free": "^5.13.0",
+        "autosize": "^4.0.2",
         "font-awesome": "^4.7.0",
         "markdown-it": "^11.0.0",
         "vue-izitoast": "^1.2.1"
