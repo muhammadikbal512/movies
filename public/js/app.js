@@ -55470,7 +55470,7 @@ var render = function() {
           [
             _c("div", {
               ref: "bodyHtml",
-              attrs: { id: _vm.uniqueName },
+              attrs: { id: _vm.unique },
               domProps: { innerHTML: _vm._s(_vm.bodyHtml) }
             }),
             _vm._v(" "),

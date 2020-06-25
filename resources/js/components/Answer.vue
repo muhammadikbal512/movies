@@ -12,7 +12,7 @@
                 <button class="btn btn-outline-secondary" type="submit" @click.prevent="cancel">Cancel</button>
             </form>
             <div v-show="!editing">
-                <div :id="uniqueName" v-html="bodyHtml" ref="bodyHtml"></div>
+                <div :id="unique" v-html="bodyHtml" ref="bodyHtml"></div>
                 <div class="row">
                     <div class="col-4">
                         <div class="ml-auto">
