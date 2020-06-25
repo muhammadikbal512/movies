@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import Meditor from './MEditor'
+import MEditor from './MEditor'
 export default {
     props:['questionId'],
     data() {
@@ -35,7 +35,7 @@ export default {
     },
 
     components:{
-        Meditor
+        MEditor
     },
 
     methods: {
