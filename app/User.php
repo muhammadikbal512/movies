@@ -7,7 +7,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Passport\HasApiTokens;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     use Notifiable, HasApiTokens;
 
@@ -20,9 +20,7 @@ class User extends Authenticatable
         'name', 'email', 'password',
     ];
 
-    protected $appends = [
-        'url', 'avatar'
-    ];
+    protected $appends = ['url', 'avatar'];
 
     /**
      * The attributes that should be hidden for arrays.
@@ -42,29 +40,78 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function questions() {
+    public function questions()
+    {
         return $this->hasMany(Question::class);
-    }
-
-    public function getUrlAttribute() {
-        // return route('questions.show', $this->id);
+    }  
+    
+    public function getUrlAttribute()
+    {
+        // return route("questions.show", $this->id);
         return '#';
     }
 
     public function answers()
     {
-        $this->hasMany(Answer::class);
+        return $this->hasMany(Answer::class);
     }
+
+    public function posts()
+    {
+        $type = request()->get('type');
+
+        if ($type === 'questions') {
+            $posts = $this->questions()->get();
+        }
+        else {
+            $posts = $this->answers()->with('question')->get();
+
+            if ($type !== 'answers') {
+                $posts2 = $this->questions()->get();
+
+                $posts = $posts->merge($posts2);
+            }
+        }
+
+        $data = collect();
+
+        foreach ($posts as $post)
+        {
+            $item = [
+                'votes_count' => $post->votes_count,
+                'created_at' => $post->created_at->format('M d Y')
+            ];
+
+            if ($post instanceof Answer)
+            {
+                $item['type'] = 'A';
+                $item['title'] = $post->question->title;
+                $item['accepted'] = $post->question->best_answer_id === $post->id ? true : false;
+            }
+            elseif ($post instanceof Question)
+            {
+                $item['type'] = 'Q';
+                $item['title'] = $post->title;
+                $item['accepted'] = (bool) $post->best_answer_id;
+            }
+
+            $data->push($item);
+        }
+
+        return $data->sortByDesc('votes_count')->values()->all();
+    }
+
     public function getAvatarAttribute()
     {
-        $email = $this->email;
+        $email = $this->email;        
         $size = 32;
+
         return "https://www.gravatar.com/avatar/" . md5( strtolower( trim( $email ) ) ) . "?s=" . $size;
     }
 
     public function favorites()
     {
-        return $this->belongsToMany(Question::class, 'favorites', 'user_id', 'question_id')->withTimestamps();
+        return $this->belongsToMany(Question::class, 'favorites')->withTimestamps(); //, 'author_id', 'question_id');
     }
 
     public function voteQuestions()
@@ -89,8 +136,8 @@ class User extends Authenticatable
         $voteAnswers = $this->voteAnswers();
         
         return $this->_vote($voteAnswers, $answer, $vote);
-    }
-
+    }   
+    
     private function _vote($relationship, $model, $vote)
     {
         if ($relationship->where('votable_id', $model->id)->exists()) {
