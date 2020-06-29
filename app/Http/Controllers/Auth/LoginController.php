@@ -53,5 +53,9 @@ class LoginController extends Controller
         $response = Route::dispatch($requestToken);
 
         return $response;
+        $request->validate([
+            'username' => 'required|string',
+            'password' => 'required|string',
+        ]);
     }
 }
